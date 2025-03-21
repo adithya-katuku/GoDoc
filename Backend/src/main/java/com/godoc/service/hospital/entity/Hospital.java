@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Calendar;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,6 +18,7 @@ public class Hospital {
     private String password;
     private String logo;
     private String founders;
+    private List<String> roles;
     private Calendar foundationDate;
     private String motto;
     private String description;
