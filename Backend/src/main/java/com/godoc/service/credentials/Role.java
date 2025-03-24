@@ -1,4 +1,4 @@
-package com.godoc.service.common;
+package com.godoc.service.credentials;
 
 import org.springframework.security.core.GrantedAuthority;
 

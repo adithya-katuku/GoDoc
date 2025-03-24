@@ -24,7 +24,7 @@ public class HospitalController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterHospitalResponse> registerHospital(@Valid RegisterHospitalRequest request) {
+    public ResponseEntity<RegisterHospitalResponse> registerHospital(@Valid RegisterHospitalRequest request) throws Exception {
         RegisterHospitalResponse response =  hospitalService.registerHospital(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

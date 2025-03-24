@@ -1,5 +1,6 @@
 package com.godoc.service.configuration;
 
+import com.godoc.service.credentials.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,19 +25,24 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class GoDocConfiguration {
+
+    @Autowired
+    CredentialService credentialService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(customizer->customizer.configurationSource(configurationSource()))
+                .cors(customizer -> customizer.configurationSource(configurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request-> request
-                        .requestMatchers( "/login", "/captcha/**", "/refresh-token").permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(
+                        request -> request
+                        .requestMatchers("/login", "hospital/register", "/refresh-token").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .httpBasic(Customizer.withDefaults())
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .logout(AbstractHttpConfigurer::disable)
                 .build();
     }
@@ -45,8 +51,9 @@ public class GoDocConfiguration {
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+
         daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-//        daoAuthenticationProvider.setUserDetailsService(employeeDetailsService);
+        daoAuthenticationProvider.setUserDetailsService(credentialService);
 
         return daoAuthenticationProvider;
     }

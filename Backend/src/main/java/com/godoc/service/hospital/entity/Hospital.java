@@ -10,15 +10,13 @@ import java.util.List;
 @Data
 public class Hospital {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hospital_id_generator")
-    @SequenceGenerator(name = "hospital_id_generator", allocationSize = 1, sequenceName = "hospital_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
-    private String password;
+    private Long credentialsId;
     private String logo;
     private String founders;
-    private List<String> roles;
     private Calendar foundationDate;
     private String motto;
     private String description;
